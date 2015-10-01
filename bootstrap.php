@@ -5,7 +5,7 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own.
+ *  and 100% of the code is my own. The app is designed with my interpretation of MVC
  */
 
 
@@ -17,7 +17,7 @@
     require_once 'config.php';
 
     // This is a list of the folders with contents that need to be required
-    $folders = array('core', 'controllers', 'models', 'views');
+    $folders = array('core', 'controllers', 'models');
 
     // Loop through every folder that we have defined, and require
     // every file.

@@ -5,7 +5,8 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own.
+ *  and 100% of the code is my own. The app is designed with my
+ *  interpretation of MVC
  */
 
 
@@ -47,24 +48,24 @@ class Route {
      */
     private function getAction() {
 
-        if (array_key_exists(1, $this->route)) {
+        if (array_key_exists(1, $this->route) && $this->route[1] != '') {
 
             // check if the method exists
             // if not, return 'index'
-            if (method_exists($this->targetController, $this->route[1])) {
+            if (method_exists($this->targetController, $action = $this->route[1] . 'Action')) {
 
                 // The route called yields a method, call it
-                $this->targetController->this->route[1];
+                $this->targetController->$action();
 
                 // Successful response
                 return true;
 
             }
 
-        } else if (method_exists($this->targetController, 'index')) {
+        } else if (method_exists($this->targetController, 'indexAction')) {
 
             // Call the index method
-            $this->targetController->index();
+            $this->targetController->indexAction();
 
             // Successful response
             return true;
