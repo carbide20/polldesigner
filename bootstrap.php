@@ -13,20 +13,22 @@
 // REQUIRED FILES
 //////////////////////////////////////////////////////////
 
-    // This is all someone should have to change to make the app work
+    // This files is all someone should have to change to make the app work
     require_once 'config.php';
 
-    // This allows us to connect to the database, via PDO.
-    require_once 'models/database.php';
+    // This is a list of the folders with contents that need to be required
+    $folders = array('core', 'controllers', 'models', 'views');
 
-    // The user model lets users create and manage accounts.
-    // Polls are tied to users.
-    require_once 'models/user.php';
-
-    // This class allows users to create and publish polls
-    // and collect results
-    require_once 'models/poll.php';
-
+    // Loop through every folder that we have defined, and require
+    // every file.
+    // TODO: Add additional checking to match only .php files, just in case
+    foreach($folders as $folder) {
+        foreach (new DirectoryIterator($folder) as $file) {
+            if ($file != '.' && $file != '..') {
+                require_once($folder . '/' . $file);
+            }
+        }
+    }
 
 //////////////////////////////////////////////////////////
 // INITIALIZATIONS

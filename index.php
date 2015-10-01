@@ -13,6 +13,7 @@
 // for the project, read config data, and initialize things
 require_once 'bootstrap.php';
 
+
 // TODO: remove this test
 //$query = $dbh->prepare("SELECT * FROM users");
 //$query->execute();
@@ -21,7 +22,23 @@ require_once 'bootstrap.php';
 //echo '<pre>'; echo var_dump($result); echo '</pre>';
 
 
-echo '<pre>'; var_dump($_GET['path']); echo '</pre>';
 
+// Parse the path
 $url = explode('/', $_GET['path']);
-echo '<pre>'; var_dump($url); echo '</pre>';
+
+// Instantiate a controller object, which will allow us to create other
+//controllers via a factory function
+$controller = new Controller();
+
+// Instantiate a route object, which will allow us to try and match the
+// route to a controller / action and execute it
+$route = new Route($controller, $url);
+
+// Try and call the route. If successful, we are done. Otherwise
+// we'll throw a 404 page here
+if (!$route->call()) {
+
+    // TODO: Return a 404 page here
+    echo 'Couldn\'t find the requested page.';
+
+}
