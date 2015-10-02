@@ -15,7 +15,11 @@
 require_once 'bootstrap.php';
 
 // Parse the URL path requested
-$url = explode('/', $_GET['path']);
+if (array_key_exists('path', $_GET)) {
+    $url = explode('/', $_GET['path']);
+} else {
+    $url = array('index');
+}
 
 // Instantiate a controller object, which will allow us to create other
 //controllers via a factory function
