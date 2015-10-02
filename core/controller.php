@@ -10,28 +10,22 @@
  */
 
 
+// The controller object's job is to help instantiate other controllers,
+// and to provide common functionality among them by being extended by all controllers
 class Controller {
 
-    public function renderView($view = null) {
-
-        // Require the matching view, if it exists
-        if (file_exists($viewFile = 'views/' . $view . '.php')) {
-            require_once($viewFile);
-        }
-
-    }
 
     /**
      * Factory pattern for instantiating controllers
-     * @param $controller
-     * @return bool|string
+     * @param $controller - The name of the controller, without path or extension
+     * @return object - The new controller | bool - false on failure
      */
     public function factory($controller) {
 
         // See if we can match this to a real controller
        if (class_exists(ucfirst($controller) . 'Controller')) {
 
-           // Build the class name from the request, and then intstantiate and return
+           // Build the class name from the request, and then instantiate and return
            $class = ucfirst($controller) . 'Controller';
            return new $class;
 

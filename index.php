@@ -14,17 +14,7 @@
 // for the project, read config data, and initialize things
 require_once 'bootstrap.php';
 
-
-// TODO: remove this test
-//$query = $dbh->prepare("SELECT * FROM users");
-//$query->execute();
-//$result = $query->fetch(PDO::FETCH_ASSOC);
-//
-//echo '<pre>'; echo var_dump($result); echo '</pre>';
-
-
-
-// Parse the path
+// Parse the URL path requested
 $url = explode('/', $_GET['path']);
 
 // Instantiate a controller object, which will allow us to create other

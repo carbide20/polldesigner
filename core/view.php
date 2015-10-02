@@ -9,18 +9,25 @@
  *  interpretation of MVC
  */
 
-
+// The view object's job is to find the right view and include it
 class View {
 
     // This allows a view to easily render a template,
     // without having to provide the full path
-    public function render($template) {
+    /**
+     * Pulls in a template file if it exists, based on the route name for the file. Otherwise
+     * it returns false.
+     *
+     * @param $template - The template name as parsed from a route, excluding directory / extension
+     * @return bool - false when template not found
+     */
+    public function render($view = null) {
 
         // Check to make sure the template exists
-        if (file_exists('templates/' . $template . '.php')) {
+        if (file_exists('views/' . $view . '.php')) {
 
             // Load up the template
-            require_once('templates/' . $template . '.php');
+            require_once('views/' . $view . '.php');
 
         // The requested template file doesn't exist
         } else {

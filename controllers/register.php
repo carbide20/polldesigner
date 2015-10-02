@@ -10,12 +10,16 @@
  */
 
 
+
 class RegisterController extends Controller {
 
     public function indexAction() {
 
+        // Get a view object
+        $view = new View();
+
         // Render the view
-        $this->renderView('register');
+        $view->render('register');
 
     }
 
