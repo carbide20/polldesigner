@@ -23,17 +23,11 @@ if (array_key_exists('path', $_GET)) {
 
 // Instantiate a controller object, which will allow us to create other
 //controllers via a factory function
-$controller = new Controller();
+$controller = new Controller($_REQUEST);
 
 // Instantiate a route object, which will allow us to try and match the
 // route to a controller / action and execute it
 $route = new Route($controller, $url);
 
-// Try and call the route. If successful, we are done. Otherwise
-// we'll throw a 404 page here
-if (!$route->call()) {
-
-    // TODO: Return a 404 page here
-    echo 'Couldn\'t find the requested page.';
-
-}
+// Call the route
+$route->call();

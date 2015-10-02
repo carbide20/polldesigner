@@ -44,17 +44,19 @@ class Route {
     public function call()
     {
 
-        // Try and use the controller factory to instantiate the controller the route indicates
-        if ($this->targetController = $this->controller->factory($this->route[0])) {
+        // Pass the route to the factory to see if it can find us a controller to use
+        $this->targetController = $this->controller->factory($this->route[0]);
 
-            // Long one, so I broke this up:
-            // If the route contains an action
-            // AND that action isn't just an empty string
-            // AND that action actually exists
-            if (array_key_exists(1, $this->route)
-                && $this->route[1] != ''
-                && method_exists($this->targetController, $action = $this->route[1] . 'Action')
-            ) {
+        // Try and use the controller factory to instantiate the controller the route indicates
+        if ($this->targetController != false) {
+
+            // If there is no action, or there's an empty action, we'll try and use indexAction
+            if (!array_key_exists(1, $this->route) || (array_key_exists(1, $this->route) && $this->route[1] == '')) {
+                $this->route[1] = 'index';
+            }
+
+
+            if (method_exists($this->targetController, $action = $this->route[1] . 'Action')) {
 
                 // The route called yields a method, call it
                 $this->targetController->$action();
@@ -74,16 +76,19 @@ class Route {
                 // Couldn't find any action to call. Give 'em the bad news
             } else {
 
-                // We found no method to call at this route. Return false so a 404 page can
-                // be displayed, or some other way of handling this
-                return false;
+                // We found no method to call at this route. Return a 404 page
+                // TODO: add a better 404 page here
+                header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+                echo "404 - Couldn't find the requested page. <br />";
 
             }
 
             // The factory has no idea what controller the route is talking about. Give 'em the bad news
         } else {
 
-            return false;
+            // TODO: add a better 404 page here
+            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
+            echo "404 - Couldn't find the requested page. <br />";
 
         }
     }

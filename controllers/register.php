@@ -16,7 +16,7 @@ class RegisterController extends Controller {
     public function indexAction() {
 
         // Get a view object
-        $view = new View();
+        $view = new View($this);
 
         // Render the view
         $view->render('register');

@@ -12,6 +12,19 @@
 // The view object's job is to find the right view and include it
 class View {
 
+
+    private $controller;
+
+
+    public function __construct($controller) {
+        $this->controller = $controller;
+    }
+
+
+    public function getController() {
+        return $this->controller;
+    }
+
     // This allows a view to easily render a template,
     // without having to provide the full path
     /**
