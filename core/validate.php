@@ -33,6 +33,7 @@ class Validate {
      * @param $ruleType - One of the rule validation types defined in this class
      * @param $ruleSetting - Additional settings the validation rule may need
      * @param $errorMessage - The error to throw if we fail validation on this rule
+     * @return object - self, to allow for method chaining
      */
     public function addRule($input, $ruleType, $ruleSetting, $errorMessage) {
 
@@ -41,6 +42,8 @@ class Validate {
                                'ruleType' => $ruleType,
                                'ruleSetting' => $ruleSetting,
                                'errorMessage' => $errorMessage);
+
+        return $this;
 
     }
 
@@ -97,6 +100,17 @@ class Validate {
         return ($first == $second);
     }
 
+
+    /**
+     * Makes sure an input is at least a minimum length
+     *
+     * @param $input - Form input to check
+     * @param $minLength - Minimum length that we require
+     * @return bool - true when the input is at least minLength, else false
+     */
+    private function min($input, $minLength) {
+        return (strlen($input) >= $minLength);
+    }
 
 
 }

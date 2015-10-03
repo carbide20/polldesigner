@@ -10,21 +10,104 @@
  */
 
 
-class User {
+class UserModel extends Model {
 
-    private $id, $username;
+    private $dbh;
+    private $id, $username, $password;
+    private $loaded = false;
 
-    // TODO: Check the sesh
-    function authenticate() {
+
+    public function __construct($dbh) {
+        $this->dbh = $dbh;
+    }
+
+    public function setId($id) {
+
+        $this->id = $id;
+        return $this;
 
     }
 
-    function login($username, $password) {
+    public function setUsername($username) {
+
+        $this->username = $username;
+        return $this;
+
+    }
+
+    public function setPassword($password) {
+
+        $this->password = $password;
+        return $this;
+
+    }
+
+    public function getUsername() {
+        return $this->username;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getDbh() {
+        return $this->dbh;
+    }
+
+    /**
+     * Takes whatever information we have about a user, and attempts to load the account if possible
+     * @return mixed - Array
+     */
+    public function load() {
+
+        // First try to load by ID if we have it
+        if ($this->id > 0) {
+
+            $sql = $this->dbh->prepare("SELECT * FROM users WHERE id = ?");
+            $sql->execute(array($this->id));
+
+            // Try to load up the userdata
+            $userdata = $sql->fetch();
+
+        // Next, try by username
+        } else if ($this->username) {
+
+            $sql = $this->dbh->prepare("SELECT * FROM users WHERE username = ?");
+            $sql->execute(array($this->username));
+
+            // Try to load up the userdata
+            $userdata = $sql->fetch();
+
+        }
+
+        // If we did find userdata, update ourselves
+        if ($userdata) {
+
+            $this->id = $userdata['id'];
+            $this->username = $userdata['username'];
+            $this->loaded = true;
+
+        }
+
+        // Give them back the updated user object
+        return $this;
 
     }
 
 
-    function register($username, $password) {
+    public static function authenticate() {
 
     }
+
+    public static function login($username, $password) {
+
+    }
+
+
+    public static function register($username, $password) {
+
+        $user = new User($username);
+
+    }
+
 }

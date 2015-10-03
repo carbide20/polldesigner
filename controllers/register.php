@@ -45,11 +45,39 @@ class RegisterController extends Controller {
         // Run the validation rules, and retrieve any errors
         $errors = $validate->validate();
 
-        // Testing
-        echo '<pre>'; var_dump($errors); echo '</pre>';
+        // If we ran into a validation error
+        if (count($errors) > 0) {
 
-//        $user = new User();
-//        $user->register();
+            // TODO: Add error to the session and redirect back to the register page
+            foreach($errors as $error) {
+                echo $error . '<br />';
+            }
+
+            die();
+
+        // Good to go, no validation errors
+        } else {
+
+            $user = new UserModel($this->getDbh());
+            $user->setUsername($formdata['username'])->setPassword($formdata['password']);
+            $user = $user->load();
+
+            // Check to see if the user already existed
+            if ($user->getId()) {
+
+                // TODO: Add an error to the session and redirect back to the register page
+                die('Sorry, that username is already taken');
+
+            // The user doesn't exist, so we're fine to save it
+            } else {
+
+                // Save the user with the new info to the DB
+                $user->save();
+
+            }
+
+
+        }
 
 
     }

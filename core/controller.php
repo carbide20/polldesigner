@@ -15,16 +15,19 @@
 class Controller {
 
 
-    private $request;
+    // Private properties
+    private $dbh, $request;
 
 
     /**
      * Takes any request parameters passed to the page, and sets them to a property
      * for reference
      *
+     * @param $dbh - database handler
      * @param $request - Any request parameters
      */
-    public function __construct($request) {
+    public function __construct($dbh, $request) {
+        $this->dbh = $dbh;
         $this->request = $request;
     }
 
@@ -36,6 +39,11 @@ class Controller {
      */
     public function getRequest() {
         return $this->request;
+    }
+
+
+    public function getDbh() {
+        return $this->dbh;
     }
 
 
@@ -56,7 +64,7 @@ class Controller {
            $class = ucfirst($controller) . 'Controller';
 
            // Instantiate the new controller class, passing it the request, and return it
-           return new $class($this->request);
+           return new $class($this->getDbh(), $this->getRequest());
 
        // Couldn't find another controller to handle it, use this one
        } else {
