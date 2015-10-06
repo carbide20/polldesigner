@@ -17,7 +17,7 @@
     require_once 'config.php';
 
     // This is a list of the folders with contents that need to be required
-    $folders = array('core', 'controllers', 'models');
+    $folders = array('core', 'controller', 'model');
 
     // Loop through every folder that we have defined, and require
     // every file.

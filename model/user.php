@@ -8,9 +8,9 @@
  *  and 100% of the code is my own. The app is designed with my
  *  interpretation of MVC
  */
+namespace Model;
 
-
-class UserModel extends Model {
+class UserModel extends \Core\AbstractEntity {
 
     private $dbh;
     private $id, $username, $password;
@@ -21,38 +21,7 @@ class UserModel extends Model {
         $this->dbh = $dbh;
     }
 
-    public function setId($id) {
 
-        $this->id = $id;
-        return $this;
-
-    }
-
-    public function setUsername($username) {
-
-        $this->username = $username;
-        return $this;
-
-    }
-
-    public function setPassword($password) {
-
-        $this->password = $password;
-        return $this;
-
-    }
-
-    public function getUsername() {
-        return $this->username;
-    }
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getDbh() {
-        return $this->dbh;
-    }
 
     /**
      * Takes whatever information we have about a user, and attempts to load the account if possible

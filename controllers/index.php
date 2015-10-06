@@ -13,6 +13,15 @@
 
 class IndexController extends Controller {
 
+
+    /**
+     * Empty constructor to overwrite the needed arguments of the parent
+     */
+    public function __construct() {
+
+    }
+
+
     public function indexAction() {
 
         // Get a view object

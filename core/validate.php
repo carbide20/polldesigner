@@ -57,30 +57,37 @@ class Validate {
         // Keep track of any errors we run into
         $errors = array();
 
-        // Loop through each of the validation rules
-        foreach($this->rules as $rule) {
+        // Make sure we have something to validate, and something to validate it with
+        if ($this->formdata && $this->rules) {
 
-            // Check to see if the referenced input exists in the formdata
-            if (array_key_exists($rule['input'], $this->formdata)) {
+            // Loop through each of the validation rules
+            foreach ($this->rules as $rule) {
 
-                // Check to see if we have a function for this rule type, and call it
-                if (method_exists($this, $rule['ruleType'])) {
+                // Check to see if the referenced input exists in the formdata
+                if (array_key_exists($rule['input'], $this->formdata)) {
 
-                    // Run our rule, and add the error if it fails
-                    if (!$this->$rule['ruleType']($this->formdata[$rule['input']], $rule['ruleSetting']) ) {
+                    // Check to see if we have a function for this rule type, and call it
+                    if (method_exists($this, $rule['ruleType'])) {
 
-                        $errors[] = $rule['errorMessage'];
+                        // Run our rule, and add the error if it fails
+                        if (!$this->$rule['ruleType']($this->formdata[$rule['input']], $rule['ruleSetting'])) {
 
+                            $errors[] = $rule['errorMessage'];
+
+                        }
+
+                    } else {
+                        // TODO: add some logging here to help developers
                     }
 
                 } else {
                     // TODO: add some logging here to help developers
                 }
 
-            } else {
-                // TODO: add some logging here to help developers
             }
 
+        } else {
+            // TODO: add some logging here to help developers
         }
 
         // Send back the errors

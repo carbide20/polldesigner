@@ -10,8 +10,17 @@
  */
 
 
-class Model {
+namespace Core;
 
 
+/**
+ * This class is going to act as a data mapper pattern ORM. It will be
+ * responsible for bridging the gap between our domain models and our
+ * persistence layer (the database, here)
+ * TODO: Write the class!
+ * Class DataMapper
+ * @package Core
+ */
+class DataMapper {
 
 }

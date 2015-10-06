@@ -37,10 +37,10 @@ class View {
     public function render($view = null) {
 
         // Check to make sure the template exists
-        if (file_exists('views/' . $view . '.php')) {
+        if (file_exists('view/' . $view . '.php')) {
 
             // Load up the template
-            require_once('views/' . $view . '.php');
+            require_once('view/' . $view . '.php');
 
         // The requested template file doesn't exist
         } else {

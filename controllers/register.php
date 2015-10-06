@@ -15,6 +15,13 @@ class RegisterController extends Controller {
 
 
     /**
+     * Empty constructor to overwrite the needed arguments of the parent
+     */
+    public function __construct() {
+    }
+
+
+    /**
      * Renders the registration page
      */
     public function indexAction() {
@@ -58,23 +65,26 @@ class RegisterController extends Controller {
         // Good to go, no validation errors
         } else {
 
-            $user = new UserModel($this->getDbh());
-            $user->setUsername($formdata['username'])->setPassword($formdata['password']);
-            $user = $user->load();
+            echo 'Model: <pre>'; var_dump($this->getModel()); echo '</pre>';
+            $user = $this->getModel()->factory('user');
+            echo '<pre>'; var_dump($user); echo '</pre>';
 
-            // Check to see if the user already existed
-            if ($user->getId()) {
-
-                // TODO: Add an error to the session and redirect back to the register page
-                die('Sorry, that username is already taken');
-
-            // The user doesn't exist, so we're fine to save it
-            } else {
-
-                // Save the user with the new info to the DB
-                $user->save();
-
-            }
+//            $user->setUsername($formdata['username'])->setPassword($formdata['password']);
+//            $user = $user->load();
+//
+//            // Check to see if the user already existed
+//            if ($user->getId()) {
+//
+//                // TODO: Add an error to the session and redirect back to the register page
+//                die('Sorry, that username is already taken');
+//
+//            // The user doesn't exist, so we're fine to save it
+//            } else {
+//
+//                // Save the user with the new info to the DB
+//                $user->save();
+//
+//            }
 
 
         }

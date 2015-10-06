@@ -16,7 +16,7 @@ class Controller {
 
 
     // Private properties
-    private $dbh, $request;
+    private $dbh, $model, $request;
 
 
     /**
@@ -24,11 +24,15 @@ class Controller {
      * for reference
      *
      * @param $dbh - database handler
+     * @param $model - the core model is required so our controller can interact with model
      * @param $request - Any request parameters
      */
-    public function __construct($dbh, $request) {
+    public function __construct(PDO $dbh, Model $model, $request) {
+
+        $this->model = $model;
         $this->dbh = $dbh;
         $this->request = $request;
+
     }
 
 
@@ -39,6 +43,11 @@ class Controller {
      */
     public function getRequest() {
         return $this->request;
+    }
+
+
+    public function getModel() {
+        return $this->model;
     }
 
 
@@ -62,9 +71,10 @@ class Controller {
 
            // Build the class name from the request
            $class = ucfirst($controller) . 'Controller';
+           echo $class;
 
            // Instantiate the new controller class, passing it the request, and return it
-           return new $class($this->getDbh(), $this->getRequest());
+           return new $class();
 
        // Couldn't find another controller to handle it, use this one
        } else {
