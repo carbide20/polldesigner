@@ -27,7 +27,7 @@ class Controller {
      * @param $model - the core model is required so our controller can interact with model
      * @param $request - Any request parameters
      */
-    public function __construct(PDO $dbh, Model $model, $request) {
+    public function __construct(PDO $dbh, $request) {
 
         $this->model = $model;
         $this->dbh = $dbh;

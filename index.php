@@ -23,7 +23,7 @@ if (array_key_exists('path', $_GET)) {
 
 // Instantiate a controller object, which will allow us to create other
 //controllers via a factory function
-$controller = new Controller($dbh, $model, $_REQUEST);
+$controller = new Controller($dbh, $_REQUEST);
 
 // Instantiate a route object, which will allow us to try and match the
 // route to a controller / action and execute it

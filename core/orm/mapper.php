@@ -21,6 +21,6 @@ namespace Core;
  * Class DataMapper
  * @package Core
  */
-class DataMapper {
+class Mapper {
 
 }
