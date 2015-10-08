@@ -5,9 +5,13 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own. The app is designed with my
- *  interpretation of MVC
+ *  and 100% of the code is my own, except for the Composer PSR-4
+ *  autoload functionality. The app is designed with my
+ *  interpretation of MVC in mind.
  */
+
+
+namespace polldesigner\core;
 
 
 // The controller object's job is to help instantiate other controllers,
@@ -16,7 +20,7 @@ class Controller {
 
 
     // Private properties
-    private $dbh, $model, $request;
+    private $dbh, $request;
 
 
     /**
@@ -24,12 +28,11 @@ class Controller {
      * for reference
      *
      * @param $dbh - database handler
-     * @param $model - the core model is required so our controller can interact with model
+     * @param $models - the core models is required so our controller can interact with models
      * @param $request - Any request parameters
      */
-    public function __construct(PDO $dbh, $request) {
+    public function __construct(\PDO $dbh, $request) {
 
-        $this->model = $model;
         $this->dbh = $dbh;
         $this->request = $request;
 

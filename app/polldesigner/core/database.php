@@ -5,9 +5,13 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own. The app is designed with my
- *  interpretation of MVC
+ *  and 100% of the code is my own, except for the Composer PSR-4
+ *  autoload functionality. The app is designed with my
+ *  interpretation of MVC in mind.
  */
+
+
+namespace polldesigner\core;
 
 
 class Database {
@@ -29,7 +33,7 @@ class Database {
     public function __construct($host, $db, $username, $password)
     {
         try {
-            $dbh = new PDO('mysql:host=' . $host . ';dbname=' . $db, $username, $password);
+            $dbh = new \PDO('mysql:host=' . $host . ';dbname=' . $db, $username, $password);
             $this->dbh = $dbh;
         } catch (PDOException $e) {
             // TODO: write the error message to a log: $e->getMessage();

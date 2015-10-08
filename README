@@ -1,6 +1,6 @@
 Thank you for taking the time to open the readme!
 
-I just wanted to take a minute to explain the purpose of this project, and some quick thoughts on it. I'm developing the project to use as a portfolio item to show how I code best. Keeping that in mind, I decided not to build this atop any existing framework, as it would be way too hard to look at quickly and understand what code is mine. Instead, the project is 100% my code, even in places where a framework or library would be better suited. Please keep this in mind as you browse the code, as well as taking into consideration that this is a living document, with unfinished functionality, the occasional warning, and todo comments about things to come.
+I just wanted to take a minute to explain the purpose of this project, and some quick thoughts on it. I'm developing the project to use as a portfolio item to show how I code best. Keeping that in mind, I decided not to build this atop any existing framework, as it would be way too hard to look at quickly and understand what code is mine. Instead, the project is 100% my code (save for the Composer PSR-4 autoloading bits which I did not write), even in places where a framework or library would be better suited. Please keep this in mind as you browse the code, as well as taking into consideration that this is a living document, with unfinished functionality, the occasional warning, and todo comments about things to come.
 
  If you made it this far, I appreciate you taking the time to check out the project and see what my code is all about.
 

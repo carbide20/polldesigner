@@ -5,10 +5,10 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own. The app is designed with my
- *  interpretation of MVC
+ *  and 100% of the code is my own, except for the Composer PSR-4
+ *  autoload functionality. The app is designed with my
+ *  interpretation of MVC in mind.
  */
-
 
 
 class RegisterController extends Controller {
@@ -26,10 +26,10 @@ class RegisterController extends Controller {
      */
     public function indexAction() {
 
-        // Get a view object
+        // Get a views object
         $view = new View($this);
 
-        // Render the view
+        // Render the views
         $view->render('register');
 
     }

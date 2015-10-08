@@ -1,4 +1,8 @@
+# Get rid of /public/ in the URL, and route all requests through
+# the index.php file
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)$ index.php?path=$1 [NC,L,QSA]
+RewriteRule ^(.+)$ /public/index.php?path=$1 [NC,L,QSA]
+RewriteCond %{REQUEST_URI} !/public/ [NC]
+RewriteRule ^(.*?)/?$ public/$1 [L]

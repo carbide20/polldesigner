@@ -5,11 +5,16 @@
  * @Date: 09/30/2015
  * @Purpose: This project is designed to serve as a sample
  *  of my code. As such, it is not built on any existing framework
- *  and 100% of the code is my own. The app is designed with my
- *  interpretation of MVC
+ *  and 100% of the code is my own, except for the Composer PSR-4
+ *  autoload functionality. The app is designed with my
+ *  interpretation of MVC in mind.
  */
 
-// The view object's job is to find the right view and include it
+
+namespace polldesigner\core;
+
+
+// The views object's job is to find the right views and include it
 class View {
 
 
@@ -25,7 +30,7 @@ class View {
         return $this->controller;
     }
 
-    // This allows a view to easily render a template,
+    // This allows a views to easily render a template,
     // without having to provide the full path
     /**
      * Pulls in a template file if it exists, based on the route name for the file. Otherwise
@@ -37,10 +42,10 @@ class View {
     public function render($view = null) {
 
         // Check to make sure the template exists
-        if (file_exists('view/' . $view . '.php')) {
+        if (file_exists('views/' . $view . '.php')) {
 
             // Load up the template
-            require_once('view/' . $view . '.php');
+            require_once('views/' . $view . '.php');
 
         // The requested template file doesn't exist
         } else {
