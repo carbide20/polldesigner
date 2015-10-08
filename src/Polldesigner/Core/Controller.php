@@ -20,7 +20,7 @@ class Controller {
 
 
     // Private properties
-    private $dbh, $request;
+    protected $dbh, $request;
 
 
     /**
@@ -72,7 +72,7 @@ class Controller {
            $class = 'Polldesigner\Controllers\\' . ucfirst($controller);
 
            // Instantiate the new controller class, passing it the request, and return it
-           return new $class();
+           return new $class($this->dbh, $this->request);
 
        // Couldn't find another controller to handle it, use this one
        } else {

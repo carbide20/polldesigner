@@ -12,7 +12,9 @@
 
 
 namespace Polldesigner\Controllers;
+use Core\UserMapper;
 use Polldesigner\Core as Core;
+use Polldesigner\Models as Models;
 
 
 class Register extends Core\Controller {
@@ -20,8 +22,10 @@ class Register extends Core\Controller {
 
     /**
      * Empty constructor to overwrite the needed arguments of the parent
+     * TODO: add args to dockblock
      */
-    public function __construct() {
+    public function __construct(\PDO $dbh, $request) {
+        parent::__construct($dbh, $request);
     }
 
 
@@ -69,9 +73,10 @@ class Register extends Core\Controller {
         // Good to go, no validation errors
         } else {
 
-            echo 'Model: <pre>'; var_dump($this->getModel()); echo '</pre>';
-            $user = $this->getModel()->factory('user');
-            echo '<pre>'; var_dump($user); echo '</pre>';
+
+            $userMapper = new Models\UserMapper($this->dbh);
+            $userMapper->register($_POST);
+
 
 //            $user->setUsername($formdata['username'])->setPassword($formdata['password']);
 //            $user = $user->load();

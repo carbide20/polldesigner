@@ -12,6 +12,7 @@
 
 
 namespace Polldesigner\Models;
+use \Polldesigner\Core as Core;
 
 
 /**
@@ -19,9 +20,10 @@ namespace Polldesigner\Models;
  * Class UserModel
  * @package Model
  */
-class User extends Polldesigner\Core\AbstractEntity {
+class User {
 
-    private $id, $username, $password;
-    private $loaded = false;
+    public $table = 'users';
+    public $id, $username, $password;
+    public $loaded = false;
 
 }
