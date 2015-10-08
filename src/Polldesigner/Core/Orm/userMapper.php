@@ -22,7 +22,7 @@ namespace Core;
 class UserMapper extends Mapper {
 
     /**
-     * Serves as a factory for instantiating new User models
+     * Serves as a factory for instantiating new User Models
      *
      * @param $id - The ID of the user to load
      * @return Object - An instance of the user Model
@@ -46,7 +46,7 @@ class UserMapper extends Mapper {
             return false;
         }
 
-        // Instantiate a new user models
+        // Instantiate a new user Models
         $user = new \Model\User();
 
         // Set the user's properties

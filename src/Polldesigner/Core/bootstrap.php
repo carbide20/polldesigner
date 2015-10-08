@@ -24,7 +24,7 @@
 //////////////////////////////////////////////////////////
 
     // This files is all someone should have to change to make the app work
-    require_once ROOTPATH . '/app/polldesigner/core/config.php';
+    require_once ROOTPATH . '/src/Polldesigner/Core/config.php';
 
     // Composer autoload
     require_once ROOTPATH . "/vendor/autoload.php";
@@ -34,10 +34,10 @@
 // NAMESPACES
 //////////////////////////////////////////////////////////
 
-    use polldesigner\core as core;
-    use polldesigner\controllers as controllers;
-    use polldesigner\models as models;
-    use polldesigner\views as views;
+    use Polldesigner\Core as Core;
+    use Polldesigner\Controllers as Controllers;
+    use Polldesigner\Models as Models;
+    use Polldesigner\Views as Views;
 
 //////////////////////////////////////////////////////////
 // INITIALIZATIONS
@@ -45,7 +45,7 @@
 
     // Create a connection to the database, by passing the credentials in from
     // config.php
-    $database = new core\Database(DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD);
+    $database = new Core\Database(DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD);
 
     // Get a handle for the database
     $dbh = $database->getHandle();
@@ -59,12 +59,12 @@
     }
 
     // Instantiate a controller object, which will allow us to create other
-    //controllers via a factory function
-    $controller = new core\Controller($dbh, $_REQUEST);
+    //Controllers via a factory function
+    $controller = new Core\Controller($dbh, $_REQUEST);
 
     // Instantiate a route object, which will allow us to try and match the
     // route to a controller / action and execute it
-    $route = new core\Route($controller, $url);
+    $route = new Core\Route($controller, $url);
 
     // Call the route
     $route->call();

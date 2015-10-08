@@ -6,4 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Polldesigner\\Core\\Controller' => $baseDir . '/src/Polldesigner/Core/Controller.php',
+    'Polldesigner\\Core\\Database' => $baseDir . '/src/Polldesigner/Core/Database.php',
+    'Polldesigner\\Core\\Route' => $baseDir . '/src/Polldesigner/Core/Route.php',
+    'Polldesigner\\Core\\Validate' => $baseDir . '/src/Polldesigner/Core/Validate.php',
+    'Polldesigner\\Core\\View' => $baseDir . '/src/Polldesigner/Core/View.php',
 );

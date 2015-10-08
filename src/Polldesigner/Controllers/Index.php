@@ -10,9 +10,10 @@
  *  interpretation of MVC in mind.
  */
 
+namespace Polldesigner\Controllers;
+use Polldesigner\Core as Core;
 
-
-class IndexController extends Controller {
+class Index extends Core\Controller {
 
 
     /**
@@ -25,10 +26,10 @@ class IndexController extends Controller {
 
     public function indexAction() {
 
-        // Get a views object
-        $view = new View($this);
+        // Get a Views object
+        $view = new Core\View($this);
 
-        // Render the homepage views
+        // Render the homepage Views
         $view->render('home');
 
 

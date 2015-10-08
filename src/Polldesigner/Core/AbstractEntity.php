@@ -11,7 +11,7 @@
  */
 
 
-namespace Core;
+namespace Polldesigner\Core;
 
 
 abstract class AbstractEntity {
@@ -22,14 +22,14 @@ abstract class AbstractEntity {
      * @param $name
      * @param $value
      * @return $this
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __set($name, $value) {
 
         $field = "_" . strtolower($name);
 
         if (!property_exists($this, $field)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "Setting the field '$field' is not valid for this entity.");
         }
 
@@ -49,12 +49,14 @@ abstract class AbstractEntity {
 
     /**
      * Handles accessing properties, as long as they exist
+     * @throws \InvalidArgumentException
+     * TODO: Finish dockblock
      */
     public function __get($name) {
         $field = "_" . strtolower($name);
 
         if (!property_exists($this, $field)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "Could not retrieve '$field', property not accessible.");
         }
 
@@ -66,6 +68,7 @@ abstract class AbstractEntity {
 
     /**
      * Get all accessible properties of the entity
+     * TODO: Finish dockblock
      */
     public function showProperties() {
         return get_object_vars($this);

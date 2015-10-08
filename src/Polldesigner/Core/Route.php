@@ -11,7 +11,7 @@
  */
 
 
-namespace polldesigner\core;
+namespace Polldesigner\Core;
 
 
 // The route object's job is to take routes, find the right controller, and call the right action,
@@ -84,7 +84,7 @@ class Route {
                 // We found no method to call at this route. Return a 404 page
                 // TODO: add a better 404 page here
                 header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-                echo "404 - Couldn't find the requested page. <br />";
+                echo "404 - Couldn't find the requested page [1]. <br />";
 
             }
 
@@ -93,7 +93,7 @@ class Route {
 
             // TODO: add a better 404 page here
             header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");
-            echo "404 - Couldn't find the requested page. <br />";
+            echo "404 - Couldn't find the requested page [2]. <br />";
 
         }
     }

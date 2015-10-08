@@ -11,7 +11,7 @@
  */
 
 
-namespace polldesigner\core;
+namespace Polldesigner\Core;
 
 
 // Use the validate object to run validation rules on formdata, and return errors

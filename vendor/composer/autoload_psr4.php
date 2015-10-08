@@ -5,7 +5,6 @@
 $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
-
 return array(
-    'polldesigner\\' => array($baseDir . '/app/polldesigner'),
+    'Polldesigner\\' => array($baseDir . '/src/Polldesigner'),
 );

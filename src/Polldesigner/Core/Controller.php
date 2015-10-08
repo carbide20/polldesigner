@@ -11,11 +11,11 @@
  */
 
 
-namespace polldesigner\core;
+namespace Polldesigner\Core;
 
 
-// The controller object's job is to help instantiate other controllers,
-// and to provide common functionality among them by being extended by all controllers
+// The controller object's job is to help instantiate other Controllers,
+// and to provide common functionality among them by being extended by all Controllers
 class Controller {
 
 
@@ -28,7 +28,7 @@ class Controller {
      * for reference
      *
      * @param $dbh - database handler
-     * @param $models - the core models is required so our controller can interact with models
+     * @param $Models - the Core Models is required so our controller can interact with Models
      * @param $request - Any request parameters
      */
     public function __construct(\PDO $dbh, $request) {
@@ -49,10 +49,6 @@ class Controller {
     }
 
 
-    public function getModel() {
-        return $this->model;
-    }
-
 
     public function getDbh() {
         return $this->dbh;
@@ -60,7 +56,7 @@ class Controller {
 
 
     /**
-     * Factory pattern for instantiating controllers
+     * Factory pattern for instantiating Controllers
      * @param $controller - The name of the controller, without path or extension
      * @return object - The new controller | bool - false on failure
      */
@@ -70,11 +66,10 @@ class Controller {
         if ($controller == '') { $controller = 'index'; }
 
         // See if we can match this to a real controller
-       if (class_exists(ucfirst($controller) . 'Controller')) {
+       if (class_exists('Polldesigner\Controllers\\' . ucfirst($controller) )) {
 
            // Build the class name from the request
-           $class = ucfirst($controller) . 'Controller';
-           echo $class;
+           $class = 'Polldesigner\Controllers\\' . ucfirst($controller);
 
            // Instantiate the new controller class, passing it the request, and return it
            return new $class();

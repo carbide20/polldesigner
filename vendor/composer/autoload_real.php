@@ -24,7 +24,6 @@ class ComposerAutoloaderInit392042e4e7fa5fd81008602b2799afb1
         spl_autoload_unregister(array('ComposerAutoloaderInit392042e4e7fa5fd81008602b2799afb1', 'loadClassLoader'));
 
         $map = require __DIR__ . '/autoload_namespaces.php';
-
         foreach ($map as $namespace => $path) {
             $loader->set($namespace, $path);
         }

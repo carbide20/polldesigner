@@ -11,7 +11,11 @@
  */
 
 
-class RegisterController extends Controller {
+namespace Polldesigner\Controllers;
+use Polldesigner\Core as Core;
+
+
+class Register extends Controller {
 
 
     /**
@@ -26,10 +30,10 @@ class RegisterController extends Controller {
      */
     public function indexAction() {
 
-        // Get a views object
-        $view = new View($this);
+        // Get a Views object
+        $view = new Core\View($this);
 
-        // Render the views
+        // Render the Views
         $view->render('register');
 
     }
@@ -44,7 +48,7 @@ class RegisterController extends Controller {
         $formdata = $this->getRequest();
 
         // Instantiate a validator with the formdata
-        $validate = new Validate($formdata);
+        $validate = new Core\Validate($formdata);
 
         // Make sure passwords match
         $validate->addRule('password', 'match', $formdata['password2'], "Your passwords must match.");

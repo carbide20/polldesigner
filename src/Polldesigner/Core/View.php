@@ -11,10 +11,10 @@
  */
 
 
-namespace polldesigner\core;
+namespace Polldesigner\Core;
 
 
-// The views object's job is to find the right views and include it
+// The Views object's job is to find the right Views and include it
 class View {
 
 
@@ -30,7 +30,7 @@ class View {
         return $this->controller;
     }
 
-    // This allows a views to easily render a template,
+    // This allows a Views to easily render a template,
     // without having to provide the full path
     /**
      * Pulls in a template file if it exists, based on the route name for the file. Otherwise
@@ -42,15 +42,18 @@ class View {
     public function render($view = null) {
 
         // Check to make sure the template exists
-        if (file_exists('views/' . $view . '.php')) {
+        if (file_exists('../src/Polldesigner/Views/' . $view . '.php')) {
 
             // Load up the template
-            require_once('views/' . $view . '.php');
+            require_once('../src/Polldesigner/Views/' . $view . '.php');
+            return true;
 
         // The requested template file doesn't exist
         } else {
+
             // TODO: add a message to the session here about not being able to locate the page
             return false;
+
         }
 
     }

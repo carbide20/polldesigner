@@ -11,7 +11,7 @@
  */
 
 
-namespace polldesigner\core;
+namespace Polldesigner\Core;
 
 
 class Database {

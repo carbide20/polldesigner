@@ -11,9 +11,17 @@
  */
 
 
-namespace polldesigner\models;
+namespace Core;
 
 
-class Poll {
+/**
+ * This class is going to act as a data mapper pattern ORM. It will be
+ * responsible for bridging the gap between our domain Models and our
+ * persistence layer (the database, here)
+ * TODO: Write the class!
+ * Class DataMapper
+ * @package Core
+ */
+class Mapper {
 
 }

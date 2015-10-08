@@ -11,7 +11,7 @@
  */
 
 
-namespace Model;
+namespace Polldesigner\Models;
 
 
 /**
@@ -19,7 +19,7 @@ namespace Model;
  * Class UserModel
  * @package Model
  */
-class User extends \Core\AbstractEntity {
+class User extends Polldesigner\Core\AbstractEntity {
 
     private $id, $username, $password;
     private $loaded = false;
