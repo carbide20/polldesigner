@@ -15,7 +15,7 @@ namespace Polldesigner\Controllers;
 use Polldesigner\Core as Core;
 
 
-class Register extends Controller {
+class Register extends Core\Controller {
 
 
     /**
