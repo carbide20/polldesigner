@@ -66,9 +66,10 @@ class Register extends Core\Controller {
             // Register the user with the postdata
             if ($userMapper->register($_POST)) {
 
-                // TODO:
-                // Log them in and send them to their account page
-                // with a welcome message in the session
+                // Log them in and send them to their account
+                header("HTTP/1.1 303 See Other");
+                header("Location: " . SITE_ROOT . "account");
+                exit;
 
             } else {
 

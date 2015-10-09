@@ -79,27 +79,34 @@ class UserMapper extends Core\DataMapper {
     /**
      * Takes registration formdata, and tries to register the user
      * @param $postdata
+     * @return bool - true on successful registration, otherwise false
      */
     public function register($formdata) {
 
         // Run a select on the DB against this username. Let's check to see if it's already in use
         $results = $this->select($this->user->table, array('username' => $formdata['username']) );
 
-        // As long as the user doesn't already exist, we'll be able to register them
-        if (empty($results)) {
-
-            // Set a session success welcoming them to their account, and return true
-            $_SESSION['successes'][] = "Your account has been created successfully, " . $formdata['username'] . ".";
-            return true;
-
-            // Looks like the username is already taken
-        } else {
+        // If we got results back, the username is already in use
+        if (!empty($results)) {
 
             // Set a session error here so we can tell the user what happened, and return false
             $_SESSION['errors'][] = "cannot register, name taken";
             return false;
 
         }
+
+        // Create the account
+        if (!$this->insert($this->user->table, array('username' => $formdata['username'], 'password' => $formdata['password']))) {
+
+            // The insert failed for some reason
+            $_SESSION['errors'][] = "The system was unable to register your account. Please try again later.";
+            return false;
+
+        }
+
+        // Set a session success welcoming them to their account, and return true
+        $_SESSION['successes'][] = "Your account has been created successfully, " . $formdata['username'] . ".";
+        return true;
 
     }
 

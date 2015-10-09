@@ -24,4 +24,6 @@ define('DB_HOST', "localhost");
 define('DB_DATABASE', "Polldesigner");
 define('DB_USER', "root");
 define('DB_PASSWORD', "");
+
+// Site root
 define('SITE_ROOT', "http://localhost/polldesigner/");

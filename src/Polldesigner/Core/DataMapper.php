@@ -46,8 +46,7 @@ class DataMapper {
      *     SQL function instead.
      * @return bool - false if no results found | array - result rows mapped to an array
      */
-    public function select($table, array $bind = array(),
-                           $operator = "AND") {
+    public function select($table, array $bind = array(), $operator = "AND") {
 
         // Look for properties to bind
         if ($bind) {
@@ -71,6 +70,27 @@ class DataMapper {
         $row = $stmt->fetch();
 
         return $row;
+
+    }
+
+
+    public function insert($table, array $bind = array()) {
+
+        // Ensure they have something to insert
+        if (!$bind) { return false; }
+
+        foreach ($bind as $col => $value) {
+            unset($bind[$col]);
+            $bind[":" . $col] = $value;
+            $values[] = $col;
+        }
+
+        // Form the query
+        $sql = "INSERT INTO " . $table . " (" . implode(', ', $values) . ") VALUES (" . implode(', ', array_keys($bind)) . ")";
+
+        // Prep, Execute, and see if the insertion was successful
+        $stmt = $this->dbh->prepare($sql);
+        return ($stmt->execute($bind));
 
     }
 
