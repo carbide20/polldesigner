@@ -13,4 +13,4 @@
 
 // This is where we load up most of the other required files
 // for the project, read config data, and initialize things
-require_once '../src/Polldesigner/Core/bootstrap.php';
+require_once '../src/Polldesigner/Core/Bootstrap.php';

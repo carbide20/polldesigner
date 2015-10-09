@@ -11,7 +11,7 @@
  */
 
 
-namespace Polldesigner\Core;
+namespace Polldesigner\Core\Validators;
 
 
 // Use the validate object to run validation rules on formdata, and return errors
@@ -40,7 +40,7 @@ class Validate {
      * @param $errorMessage - The error to throw if we fail validation on this rule
      * @return object - self, to allow for method chaining
      */
-    public function addRule($input, $ruleType, $ruleSetting, $errorMessage) {
+    protected function addRule($input, $ruleType, $ruleSetting, $errorMessage) {
 
         // Save the rule
         $this->rules[] = array('input' => $input,
@@ -57,7 +57,7 @@ class Validate {
      * Runs through all the validation rules, collects the errors in an array, and returns it
      * @return array - errors from validation
      */
-    public function validate() {
+    protected function validate() {
 
         // Keep track of any errors we run into
         $errors = array();

@@ -24,7 +24,7 @@ namespace Polldesigner\Core;
  */
 class DataMapper {
 
-    private $dbh;
+    protected $dbh;
 
 
     /**

@@ -12,7 +12,7 @@
 
 
 namespace Polldesigner\Controllers;
-use Core\UserMapper;
+
 use Polldesigner\Core as Core;
 use Polldesigner\Models as Models;
 
@@ -38,63 +38,52 @@ class Register extends Core\Controller {
         $view = new Core\View($this);
 
         // Render the Views
+        $view->render('header');
+        $view->render('notifications');
         $view->render('register');
-
+        $view->render('footer');
+        exit;
     }
 
 
     /**
      * Handles the registration form
+     * TODO: Consider whether or not to move the form validation logic into UserMapper->register()
      */
     public function formAction() {
 
         // Grab the formdata
         $formdata = $this->getRequest();
 
-        // Instantiate a validator with the formdata
-        $validate = new Core\Validate($formdata);
+        // Validate the form
+        if (new Core\Validators\RegisterValidate($formdata)) {
 
-        // Make sure passwords match
-        $validate->addRule('password', 'match', $formdata['password2'], "Your passwords must match.");
+            // Create a new user mapper
+            $userMapper = new Models\UserMapper($this->dbh);
 
-        // Run the validation rules, and retrieve any errors
-        $errors = $validate->validate();
+            // Register the user with the postdata
+            if ($userMapper->register($_POST)) {
 
-        // If we ran into a validation error
-        if (count($errors) > 0) {
+                // TODO:
+                // Log them in and send them to their account page
+                // with a welcome message in the session
 
-            // TODO: Add error to the session and redirect back to the register page
-            foreach($errors as $error) {
-                echo $error . '<br />';
+            } else {
+
+                // Redirect back, so the errors can be displayed
+                header("HTTP/1.1 303 See Other");
+                header("Location: register");
+                exit;
+
             }
 
-            die();
-
-        // Good to go, no validation errors
+        // Failed to validate
         } else {
 
-
-            $userMapper = new Models\UserMapper($this->dbh);
-            $userMapper->register($_POST);
-
-
-//            $user->setUsername($formdata['username'])->setPassword($formdata['password']);
-//            $user = $user->load();
-//
-//            // Check to see if the user already existed
-//            if ($user->getId()) {
-//
-//                // TODO: Add an error to the session and redirect back to the register page
-//                die('Sorry, that username is already taken');
-//
-//            // The user doesn't exist, so we're fine to save it
-//            } else {
-//
-//                // Save the user with the new info to the DB
-//                $user->save();
-//
-//            }
-
+            // Redirect back, so the errors can be displayed
+            header("HTTP/1.1 303 See Other");
+            header("Location: register");
+            exit;
 
         }
 

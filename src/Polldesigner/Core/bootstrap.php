@@ -12,11 +12,16 @@
 
 
 //////////////////////////////////////////////////////////
+// SESSION
+//////////////////////////////////////////////////////////
+session_start();
+
+
+//////////////////////////////////////////////////////////
 // CONSTANT DEFITIONS
 //////////////////////////////////////////////////////////
 
     define( 'ROOTPATH', dirname(dirname(dirname(__DIR__))) );
-
 
 
 //////////////////////////////////////////////////////////
@@ -24,7 +29,7 @@
 //////////////////////////////////////////////////////////
 
     // This files is all someone should have to change to make the app work
-    require_once ROOTPATH . '/src/Polldesigner/Core/config.php';
+    require_once ROOTPATH . '/src/Polldesigner/Core/Config.php';
 
     // Composer autoload
     require_once ROOTPATH . "/vendor/autoload.php";
@@ -44,7 +49,7 @@
 //////////////////////////////////////////////////////////
 
     // Create a connection to the database, by passing the credentials in from
-    // config.php
+    // Config.php
     $database = new Core\Database(DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD);
 
     // Get a handle for the database

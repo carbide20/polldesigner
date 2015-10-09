@@ -11,6 +11,7 @@
  */
 
 namespace Polldesigner\Controllers;
+
 use Polldesigner\Core as Core;
 
 class Index extends Core\Controller {
