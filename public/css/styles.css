@@ -1,5 +1,21 @@
-div .error {
-    background-color: #CD5C5C;
-    width: 100%
-    padding: 10px;
+body, html {
+    padding: 0; margin: 0;
+}
+
+
+/**
+Notifications
+**/
+.error, .warning, .success {
+    width: 100%;
+    padding: 5px;
+}
+.error {
+    background-color: #FF8280;
+}
+.warning {
+    background-color: #FFE05D;
+}
+.success {
+    background-color: #6DE8CB;
 }

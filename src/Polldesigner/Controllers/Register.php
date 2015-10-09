@@ -37,6 +37,8 @@ class Register extends Core\Controller {
         // Get a Views object
         $view = new Core\View($this);
 
+
+
         // Render the Views
         $view->render('header');
         $view->render('notifications');
@@ -72,7 +74,7 @@ class Register extends Core\Controller {
 
                 // Redirect back, so the errors can be displayed
                 header("HTTP/1.1 303 See Other");
-                header("Location: register");
+                header("Location: " . SITE_ROOT . "register");
                 exit;
 
             }
@@ -82,7 +84,7 @@ class Register extends Core\Controller {
 
             // Redirect back, so the errors can be displayed
             header("HTTP/1.1 303 See Other");
-            header("Location: register");
+            header("Location: " . SITE_ROOT . "register");
             exit;
 
         }

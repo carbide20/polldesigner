@@ -42,16 +42,15 @@ class View {
     public function render($view = null) {
 
         // Check to make sure the template exists
-        if (file_exists('../src/Polldesigner/Views/' . $view . '.php')) {
+        if (file_exists('../src/Polldesigner/Views/' . ucfirst($view) . '.php')) {
 
             // Load up the template
-            require_once('../src/Polldesigner/Views/' . $view . '.php');
+            require_once('../src/Polldesigner/Views/' . ucfirst($view) . '.php');
             return true;
 
         // The requested template file doesn't exist
         } else {
 
-            // TODO: add a message to the session here about not being able to locate the page
             return false;
 
         }
