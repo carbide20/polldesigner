@@ -32,6 +32,7 @@ class Index extends Core\Controller {
 
         // Render the homepage Views
         $view->render('home');
+        exit;
 
 
     }

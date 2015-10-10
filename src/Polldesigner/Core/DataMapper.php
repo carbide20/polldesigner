@@ -15,10 +15,12 @@ namespace Polldesigner\Core;
 
 
 /**
- * This class is going to act as a data mapper pattern ORM. It will be
- * responsible for bridging the gap between our domain Models and our
- * persistence layer (the database, here)
- * TODO: Write the class!
+ * This is the core data mapper, from which other data mappers extend.
+ * It provides wrapper functionality for more common SQL commands,
+ * to abstract most handwritten SQL away from the child data mappers.
+ * This served to keep them simpler, but also to normalize error handling
+ * and make switching to a different DB easier.
+ *
  * Class DataMapper
  * @package Core
  */
@@ -40,13 +42,14 @@ class DataMapper {
      * Functions as a wrapper for select queries
      *
      * @param $table - The table to select from
+     * @param array $fields - The fields to select. This defaults to all fields.
      * @param array $bind - The required bindings in the form of array('property => 'value')
      * @param string $operator - This defaults to AND, but can be changed to OR. For more complex
      *     queries combining operators or using parenthesis to group operations, please use the custom
      *     SQL function instead.
      * @return bool - false if no results found | array - result rows mapped to an array
      */
-    public function select($table, array $bind = array(), $operator = "AND") {
+    public function select($table, array $fields = array('*'), array $bind = array(), $operator = "AND") {
 
         // Look for properties to bind
         if ($bind) {
@@ -61,8 +64,8 @@ class DataMapper {
             }
         }
 
-        // Form the query
-        $sql = "SELECT * FROM " . $table . (($bind) ? " WHERE " . implode(" " . $operator . " ", $where) : " ");
+        // Form the query. Pay attention, this one gets complicated ;)
+        $sql = "SELECT " . count($fields) > 1 ? implode(", ", $fields) : $fields[0] . " FROM " . $table . (($bind) ? " WHERE " . implode(" " . $operator . " ", $where) : " ");
 
         // Prep, Execute, Fetch any existing rows and return
         $stmt = $this->dbh->prepare($sql);

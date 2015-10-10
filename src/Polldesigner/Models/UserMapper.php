@@ -84,7 +84,7 @@ class UserMapper extends Core\DataMapper {
     public function register($formdata) {
 
         // Run a select on the DB against this username. Let's check to see if it's already in use
-        $results = $this->select($this->user->table, array('username' => $formdata['username']) );
+        $results = $this->select($this->user->table, array('id'), array('username' => $formdata['username']) );
 
         // If we got results back, the username is already in use
         if (!empty($results)) {
@@ -95,8 +95,11 @@ class UserMapper extends Core\DataMapper {
 
         }
 
+        // Encrypt the password
+        $hashedPassword = $this->generateHash($formdata['password']);
+
         // Create the account
-        if (!$this->insert($this->user->table, array('username' => $formdata['username'], 'password' => $formdata['password']))) {
+        if (!$this->insert($this->user->table, array('username' => $formdata['username'], 'password' => $hashedPassword))) {
 
             // The insert failed for some reason
             $_SESSION['errors'][] = "The system was unable to register your account. Please try again later.";
@@ -110,12 +113,38 @@ class UserMapper extends Core\DataMapper {
 
     }
 
-    public function login() {
+    public function login($formdata) {
+
+        $results = $this->select($this->user->table, array('id', 'password'), array('username' => $formdata['username']) );
+
+        echo '<pre>'; var_dump($formdata); echo '</pre>';
+        echo '<pre>'; var_dump($results); echo '</pre>';
+        die();
+        if (!$this->verify($formdata['password'], $results['password'])) {
+
+            // The insert failed for some reason
+            $_SESSION['errors'][] = "We were unable to log you in with the credentials you provided.";
+            return false;
+
+        }
 
     }
 
     public function authenticate() {
 
+    }
+
+
+    private function verify($password, $hashedPassword) {
+
+        return crypt($password, $hashedPassword) == $hashedPassword;
+    }
+
+    private function generateHash($password) {
+        if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
+            $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
+            return crypt($password, $salt);
+        }
     }
 
 }
