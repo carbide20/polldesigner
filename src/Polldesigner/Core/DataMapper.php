@@ -65,7 +65,7 @@ class DataMapper {
         }
 
         // Form the query. Pay attention, this one gets complicated ;)
-        $sql = "SELECT " . count($fields) > 1 ? implode(", ", $fields) : $fields[0] . " FROM " . $table . (($bind) ? " WHERE " . implode(" " . $operator . " ", $where) : " ");
+        $sql = "SELECT " . (count($fields) > 1 ? implode(", ", $fields) : $fields[0]) . " FROM " . $table . (($bind) ? " WHERE " . implode(" " . $operator . " ", $where) : " ");
 
         // Prep, Execute, Fetch any existing rows and return
         $stmt = $this->dbh->prepare($sql);

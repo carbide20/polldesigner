@@ -83,6 +83,8 @@ class UserMapper extends Core\DataMapper {
      */
     public function register($formdata) {
 
+        // TODO: Add some rate-limiting here for brute forcing
+
         // Run a select on the DB against this username. Let's check to see if it's already in use
         $results = $this->select($this->user->table, array('id'), array('username' => $formdata['username']) );
 
@@ -115,31 +117,59 @@ class UserMapper extends Core\DataMapper {
 
     public function login($formdata) {
 
+        // TODO: Add some rate-limiting here for brute forcing
+
         $results = $this->select($this->user->table, array('id', 'password'), array('username' => $formdata['username']) );
 
-        echo '<pre>'; var_dump($formdata); echo '</pre>';
-        echo '<pre>'; var_dump($results); echo '</pre>';
-        die();
+
         if (!$this->verify($formdata['password'], $results['password'])) {
 
             // The insert failed for some reason
             $_SESSION['errors'][] = "We were unable to log you in with the credentials you provided.";
             return false;
 
+        } else {
+
+            // Success, set the session auth and redirect to the account page
+            echo 'success!';
+            die();
+
         }
 
     }
 
+
     public function authenticate() {
 
+
+
     }
 
 
-    private function verify($password, $hashedPassword) {
+    /**
+     * Takes the attempted password, and compares it with the hashed
+     * password we keep in our DB. It uses bcrypt's comparison functionality.
+     *
+     * @param $password - This is the one coming from the user trying to login
+     * @param $encryptedPassword - This should be a bcrypt'ed password from our DB
+     * @return bool
+     */
+    private function verify($password, $encryptedPassword) {
 
-        return crypt($password, $hashedPassword) == $hashedPassword;
+        return crypt($password, $encryptedPassword) == $encryptedPassword;
+
     }
 
+
+    /**
+     * Takes a plaintext password, and uses bcrypt to encrypt it for DB
+     * storage. Bcrypt is designed much better than anything I could write
+     * for this, and is also nice and slow to thwart off goblins, so they
+     * can't mess with it so hard.
+     *
+     * @param $password
+     * @return string
+     */
     private function generateHash($password) {
         if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
             $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
