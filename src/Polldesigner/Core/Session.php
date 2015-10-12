@@ -22,6 +22,11 @@ class Session {
 
         $this->database = $database;
 
+        // Make sure we can work with sessions
+        if ( !is_writable(session_save_path()) ) {
+            throw new Exception('Session save path "'.session_save_path().'" is not writable!');
+        }
+
     }
 
 
@@ -35,8 +40,13 @@ class Session {
         // First, kill any session they may already have
         $this->expireSession();
 
-        // Open a new session
-        session_start();
+        // Check to see if they need a new session
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+
+            // Open a new session
+            session_start();
+
+        }
 
         // Save the session ID to the object
         $this->id = session_id();
@@ -51,10 +61,16 @@ class Session {
 
     }
 
+
+    /**
+     * This stores the session information in the DB
+     *
+     * @return bool - true on successful insert, otherwise false
+     */
     private function store() {
 
         // Check to make sure we have everything we need
-        if (!($this->id && $this->user->id)) {
+        if (!($this->id) || !($this->user->id > 0)) {
             return false;
         }
 
@@ -69,24 +85,82 @@ class Session {
     }
 
 
-    public function renewSession() {
+    public function auth() {
 
-//        User already logged in hits a page where they need to authenticate. We are passed the user object
-//        User not logged in hits a page where they have to be authenticated. We are passed the user object
-//            Do they have a session object that matches the ID of the $user object?
-//            Yes
-//                All good, return true and renew session time
-//                redirect to login page
-//            No
-//                Expire the session, redirect to login
+        // Check if the session is not active. we also do the renewal with this check if it is active, so need to
+        // later on pages that call auth().
+        if (!$this->renew()) {
 
+            // The session is expired
+            $_SESSION['errors'][] = "Your session has timed out for security. Please login again.";
+
+            // Redirect back, so the errors can be displayed
+            header("HTTP/1.1 303 See Other");
+            header("Location: " . SITE_ROOT . "login");
+            exit;
+
+        }
+
+
+    }
+
+
+    // This will have to be written to be called from non-auth pages, just for renewal
+    // if the session is expired, we do nothing, and return false
+    public function renew() {
+
+        // See if they have an active session
+        if (session_status() === PHP_SESSION_ACTIVE) {
+
+            // Update our class, make sure we still know the user's session ID
+            $this->id = session_id();
+
+            // Now we can use the updated ID to do a DB lookup
+            if (!$result = $this->database->select($this->table, array('user_id', 'session_id'), array('session_id' => $this->id)) ) {
+                return false;
+            }
+
+            // See if the session IDs match
+            if (empty($result) || !array_key_exists('session_id', $result) || $result['session_id'] !== $this->id) {
+                return false;
+            }
+
+            // Calculate timeout time
+            $time = new DateTime($result['created_at']);
+            $time->add(new DateInterval('PT' . TIMEOUT_TIME . 'M'));
+            $timeoutTime = $time->format('Y-m-d H:i:s');
+
+            // Check to see if the session needs to expire
+            if (date('Y-m-d H:i:s') >= $timeoutTime) {
+
+                // It's time for the session to go
+                $this->expireSession();
+                return false;
+
+            // Otherwise we gotta revive this thing
+            } else {
+
+                // TODO: check if this fails
+                // Update the session expiry and return true
+                $this->database->update($this->table, array('created_at' => date('Y-m-d H:i:s')), array('session_id' => $this->id, 'user_id' => $this->user));
+                return true;
+
+            }
+
+        // No active session, return false
+        } else {
+
+            return false;
+
+        }
 
     }
 
     public function expireSession() {
 
         // The long and complicated way php.net suggested being completely, absolutely, positively, and utterly
-        // sure that the session is gone.
+        // sure that the session is gone. I know it doesn't make a lot of sense to start a session in this file,
+        // but bear with me. We've gotta start it, to empty it, to destroy it.
         if (!session_status() === PHP_SESSION_ACTIVE) {
 
             // Initialize the session.
@@ -110,7 +184,6 @@ class Session {
         // Finally, destroy the session.
         session_destroy();
 
-        //redirect to: TIMEOUT_PAGE
     }
 
 

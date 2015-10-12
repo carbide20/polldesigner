@@ -32,3 +32,6 @@ define('SITE_ROOT', "http://localhost/polldesigner/");
 
 // Page to redirect to after user times out
 define('TIMEOUT_PAGE', "login/index");
+
+// amount of time before page timeout, measured in minutes
+define('TIMEOUT_TIME', 60);

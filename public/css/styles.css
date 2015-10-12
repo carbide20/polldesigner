@@ -4,18 +4,23 @@ body, html {
 
 
 /**
-Notifications
+* Notifications
 **/
 .error, .warning, .success {
     width: 100%;
-    padding: 5px;
+    padding: 8px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
 }
 .error {
     background-color: #FF8280;
+    border-color: #FF666B;
 }
 .warning {
     background-color: #FFE05D;
+    border-color: #FFD50A;
 }
 .success {
     background-color: #6DE8CB;
+    border-color: #15E8B8;
 }

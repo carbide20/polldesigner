@@ -85,15 +85,19 @@ class Database {
     }
 
 
+    // TODO: add docblock
     public function insert($table, array $bind = array()) {
 
         // Ensure they have something to insert
         if (!$bind) { return false; }
 
+        // Create the bind and values arrays
         foreach ($bind as $col => $value) {
+
             unset($bind[$col]);
             $bind[":" . $col] = $value;
             $values[] = $col;
+
         }
 
         // Form the query
@@ -101,7 +105,43 @@ class Database {
 
         // Prep, Execute, and see if the insertion was successful
         $stmt = $this->dbh->prepare($sql);
-        return ($stmt->execute($bind));
+        return $stmt->execute($bind);
+
+    }
+
+
+    // TODO: add dockblock
+    public function update($table, array $setBind = array(), $whereBind = array(), $operator = "AND") {
+
+        // Ensure they have something to update
+        if (!$setBind || !$whereBind) { return false; }
+
+        // Create the bind array
+        foreach ($setBind as $col => $value) {
+
+            unset($setBind[$col]);
+            $setBind[":" . $col] = $value;
+            $set[] = $col . " = :" . $col;
+
+        }
+
+        // Update the bindings to match the proper format
+        foreach ($whereBind as $col => $value) {
+
+            unset($whereBind[$col]);
+            $whereBind[":" . $col] = $value;
+            $where[] = $col . " = :" . $col;
+
+        }
+
+        // Form the query.
+        $sql = "UPDATE " . $table . "SET " . implode(", ", $set) . " WHERE " . implode(" " . $operator . " ", $where);
+
+        // Prep, Execute, and return
+        $stmt = $this->dbh->prepare($sql);
+        return $stmt->execute($bind);
+
+
 
     }
 

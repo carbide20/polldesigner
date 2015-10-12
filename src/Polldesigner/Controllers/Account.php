@@ -30,12 +30,15 @@ class Account extends Core\Controller {
 
 
     /**
-     * Renders the registration page
+     * Renders the account page
      */
     public function indexAction() {
 
         // Get a Views object
         $view = new Core\View($this);
+
+        // Authenticate the user
+        $this->session->auth();
 
         // Render the Views
         $view->render('header');
