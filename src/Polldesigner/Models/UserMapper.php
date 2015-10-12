@@ -21,16 +21,21 @@ use Polldesigner\Core as Core;
  * on a different layer from the user class itself, which is only
  * responsible for knowing of, setting, and getting its own properties
  */
-class UserMapper extends Core\DataMapper {
+class UserMapper {
 
 
-    private $user;
+
+    private $database, $session, $user;
 
 
-    public function __construct(\PDO $dbh) {
 
-        // Pass the database handle up to the core mapper
-        parent::__construct($dbh);
+    public function __construct(Core\Database $database, Core\Session $session) {
+
+        // Save the database instance
+        $this->database = $database;
+
+        // Save the session
+        $this->session = $session;
 
         // Create a new user shell to use
         $this->user = new User();
@@ -51,7 +56,7 @@ class UserMapper extends Core\DataMapper {
         }
 
         // Run the query to get the userData
-        $sql = $this->dbh->prepare("SELECT * FROM users WHERE id = :id");
+        $sql = $this->database->getHandle()->prepare("SELECT * FROM users WHERE id = :id");
         $sql->execute(array(":id" => $id));
 
         // Try to load up the userdata
@@ -78,13 +83,15 @@ class UserMapper extends Core\DataMapper {
 
     /**
      * Takes registration formdata, and tries to register the user
-     * @param $postdata
+     * @param $formdata
      * @return bool - true on successful registration, otherwise false
      */
     public function register($formdata) {
 
+        // TODO: Add some rate-limiting here for brute forcing
+
         // Run a select on the DB against this username. Let's check to see if it's already in use
-        $results = $this->select($this->user->table, array('username' => $formdata['username']) );
+        $results = $this->database->select($this->user->table, array('id'), array('username' => $formdata['username']) );
 
         // If we got results back, the username is already in use
         if (!empty($results)) {
@@ -95,11 +102,23 @@ class UserMapper extends Core\DataMapper {
 
         }
 
+        // Encrypt the password
+        $hashedPassword = $this->generateHash($formdata['password']);
+
         // Create the account
-        if (!$this->insert($this->user->table, array('username' => $formdata['username'], 'password' => $formdata['password']))) {
+        if (!$this->database->insert($this->user->table, array('username' => $formdata['username'], 'password' => $hashedPassword))) {
 
             // The insert failed for some reason
             $_SESSION['errors'][] = "The system was unable to register your account. Please try again later.";
+            return false;
+
+        }
+
+        // Fire up the session, saving it to our DB as well
+        if (!$this->session->start($this->user)) {
+
+            // The insert failed for some reason
+            $_SESSION['errors'][] = "Please ensure that you have cookies enabled, and try again.";
             return false;
 
         }
@@ -110,12 +129,77 @@ class UserMapper extends Core\DataMapper {
 
     }
 
-    public function login() {
+    public function login($formdata) {
+
+        // TODO: Add some rate-limiting here for brute forcing
+
+        $results = $this->database->select($this->user->table, array('id', 'username', 'password'), array('username' => $formdata['username']) );
+
+
+        // Check the password against the encrypted one in the DB
+        if ($this->verify($formdata['password'], $results['password'])) {
+
+            // Now that we've logged them in, set the important stuff on the user model
+            $this->user->username = $results['username'];
+            $this->user->id = $results['id'];
+
+            // Fire up the session, saving it to our DB as well
+            if (!$this->session->start($this->user)) {
+
+                // The insert failed for some reason
+                $_SESSION['errors'][] = "Please ensure that you have cookies enabled, and try again.";
+                return false;
+
+            }
+
+        } else {
+
+            // The insert failed for some reason
+            $_SESSION['errors'][] = "We were unable to log you in with the credentials you provided.";
+            return false;
+
+        }
+
+        // Set a session success welcoming them to their account, and return true
+        $_SESSION['successes'][] = "You have been logged in successfully, " . $formdata['username'] . ".";
+        return true;
 
     }
 
-    public function authenticate() {
 
+
+
+
+
+    /**
+     * Takes the attempted password, and compares it with the hashed
+     * password we keep in our DB. It uses bcrypt's comparison functionality.
+     *
+     * @param $password - This is the one coming from the user trying to login
+     * @param $encryptedPassword - This should be a bcrypt'ed password from our DB
+     * @return bool
+     */
+    private function verify($password, $encryptedPassword) {
+
+        return crypt($password, $encryptedPassword) == $encryptedPassword;
+
+    }
+
+
+    /**
+     * Takes a plaintext password, and uses bcrypt to encrypt it for DB
+     * storage. Bcrypt is designed much better than anything I could write
+     * for this, and is also nice and slow to thwart off goblins, so they
+     * can't mess with it so hard.
+     *
+     * @param $password
+     * @return string
+     */
+    private function generateHash($password) {
+        if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
+            $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
+            return crypt($password, $salt);
+        }
     }
 
 }

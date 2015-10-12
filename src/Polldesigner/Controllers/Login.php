@@ -17,7 +17,7 @@ use Polldesigner\Core as Core;
 use Polldesigner\Models as Models;
 
 
-class Register extends Core\Controller {
+class Login extends Core\Controller {
 
 
     /**
@@ -40,7 +40,7 @@ class Register extends Core\Controller {
         // Render the Views
         $view->render('header');
         $view->render('notifications');
-        $view->render('register');
+        $view->render('login');
         $view->render('footer');
         exit;
 
@@ -57,13 +57,13 @@ class Register extends Core\Controller {
         $formdata = $this->getRequest();
 
         // Validate the form
-        if (new Core\Validators\RegisterValidate($formdata)) {
+        if (new Core\Validators\LoginValidate($formdata)) {
 
             // Create a new user mapper
             $userMapper = new Models\UserMapper($this->database, $this->session);
 
             // Register the user with the postdata
-            if ($userMapper->register($_POST)) {
+            if ($userMapper->login($_POST)) {
 
                 // Log them in and send them to their account
                 header("HTTP/1.1 303 See Other");
@@ -74,7 +74,7 @@ class Register extends Core\Controller {
 
                 // Redirect back, so the errors can be displayed
                 header("HTTP/1.1 303 See Other");
-                header("Location: " . SITE_ROOT . "register");
+                header("Location: " . SITE_ROOT . "login");
                 exit;
 
             }
@@ -84,7 +84,7 @@ class Register extends Core\Controller {
 
             // Redirect back, so the errors can be displayed
             header("HTTP/1.1 303 See Other");
-            header("Location: " . SITE_ROOT . "register");
+            header("Location: " . SITE_ROOT . "login");
             exit;
 
         }

@@ -20,20 +20,21 @@ class Controller {
 
 
     // Private properties
-    protected $dbh, $request;
+    protected $database, $session, $request;
 
 
     /**
      * Takes any request parameters passed to the page, and sets them to a property
      * for reference
      *
-     * @param $dbh - database handler
-     * @param $Models - the Core Models is required so our controller can interact with Models
+     * @param $database - Database instance
+     * @param $session - Session instance
      * @param $request - Any request parameters
      */
-    public function __construct(\PDO $dbh, $request) {
+    public function __construct(Database $database, Session $session, $request) {
 
-        $this->dbh = $dbh;
+        $this->database = $database;
+        $this->session = $session;
         $this->request = $request;
 
     }
@@ -50,8 +51,8 @@ class Controller {
 
 
 
-    public function getDbh() {
-        return $this->dbh;
+    public function getDatabase() {
+        return $this->database;
     }
 
 
@@ -71,8 +72,8 @@ class Controller {
            // Build the class name from the request
            $class = 'Polldesigner\Controllers\\' . ucfirst($controller);
 
-           // Instantiate the new controller class, passing it the request, and return it
-           return new $class($this->dbh, $this->request);
+           // Instantiate the new controller class passing it the database, session, request; return it
+           return new $class($this->database, $this->session, $this->request);
 
        // Couldn't find another controller to handle it, use this one
        } else {
