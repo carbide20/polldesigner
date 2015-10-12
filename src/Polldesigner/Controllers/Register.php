@@ -24,8 +24,8 @@ class Register extends Core\Controller {
      * Empty constructor to overwrite the needed arguments of the parent
      * TODO: add args to dockblock
      */
-    public function __construct(\PDO $dbh, $request) {
-        parent::__construct($dbh, $request);
+    public function __construct(Core\Database $database, Core\Session $session, $request) {
+        parent::__construct($database, $session, $request);
     }
 
 
@@ -60,7 +60,7 @@ class Register extends Core\Controller {
         if (new Core\Validators\RegisterValidate($formdata)) {
 
             // Create a new user mapper
-            $userMapper = new Models\UserMapper($this->dbh);
+            $userMapper = new Models\UserMapper($this->database, $this->session);
 
             // Register the user with the postdata
             if ($userMapper->register($_POST)) {

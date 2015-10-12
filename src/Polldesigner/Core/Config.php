@@ -18,6 +18,8 @@
 // to 644 permissions on public servers
 //////////////////////////////////////////////////////////
 
+// TODO: Most of these except the DB credentials should be
+// stored in the DB, and this converted into an object.
 
 // Database info / credentials
 define('DB_HOST', "localhost");
@@ -27,3 +29,6 @@ define('DB_PASSWORD', "");
 
 // Site root
 define('SITE_ROOT', "http://localhost/polldesigner/");
+
+// Page to redirect to after user times out
+define('TIMEOUT_PAGE', "login/index");

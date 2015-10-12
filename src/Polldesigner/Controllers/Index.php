@@ -20,8 +20,8 @@ class Index extends Core\Controller {
     /**
      * Empty constructor to overwrite the needed arguments of the parent
      */
-    public function __construct() {
-
+    public function __construct(Core\Database $database, Core\Session $session, $request) {
+        parent::__construct($database, $session, $request);
     }
 
 

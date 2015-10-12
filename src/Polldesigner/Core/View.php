@@ -13,8 +13,8 @@
 
 namespace Polldesigner\Core;
 
-
-// The Views object's job is to find the right Views and include it
+// TODO: Write real views, not just templates!
+// The Views object's job is to find the right View and include it
 class View {
 
 
@@ -30,8 +30,7 @@ class View {
         return $this->controller;
     }
 
-    // This allows a Views to easily render a template,
-    // without having to provide the full path
+
     /**
      * Pulls in a template file if it exists, based on the route name for the file. Otherwise
      * it returns false.

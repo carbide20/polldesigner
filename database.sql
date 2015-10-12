@@ -1,0 +1,20 @@
+CREATE TABLE `users` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(255) NULL DEFAULT NULL,
+	`password` VARCHAR(255) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=6;
+
+
+CREATE TABLE `sessions` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `session_id` INT(11) NOT NULL DEFAULT '0',
+  `user_id` INT(11) NOT NULL DEFAULT '0',
+  `created_at` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+)
+  ENGINE=InnoDB
+;

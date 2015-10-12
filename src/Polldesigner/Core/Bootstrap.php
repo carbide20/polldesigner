@@ -44,17 +44,10 @@ use Polldesigner\Controllers as Controllers;
 use Polldesigner\Models as Models;
 use Polldesigner\Views as Views;
 
+
 //////////////////////////////////////////////////////////
-// INITIALIZATIONS
+// PARSE URL
 //////////////////////////////////////////////////////////
-
-// Create a connection to the database, by passing the credentials in from
-// Config.php
-$database = new Core\Database(DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD);
-
-// Get a handle for the database
-$dbh = $database->getHandle();
-
 
 // Parse the URL path requested
 if (array_key_exists('path', $_GET)) {
@@ -63,9 +56,21 @@ if (array_key_exists('path', $_GET)) {
     $url = array('index');
 }
 
+
+//////////////////////////////////////////////////////////
+// INITIALIZATIONS
+//////////////////////////////////////////////////////////
+
+// Create a connection to the database, by passing the credentials in from
+// Config.php
+$database = new Core\Database(DB_HOST, DB_DATABASE, DB_USER, DB_PASSWORD);
+
+// Instantiate a new session object (This doesn't actually start the session yet)
+$session = new Core\Session($database);
+
 // Instantiate a controller object, which will allow us to create other
 //Controllers via a factory function
-$controller = new Core\Controller($dbh, $_REQUEST);
+$controller = new Core\Controller($database, $session, $_REQUEST);
 
 // Instantiate a route object, which will allow us to try and match the
 // route to a controller / action and execute it
