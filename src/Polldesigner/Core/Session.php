@@ -37,9 +37,6 @@ class Session {
      */
     public function start(Models\User $user) {
 
-        // First, kill any session they may already have
-        $this->expireSession();
-
         // Check to see if they need a new session
         if (session_status() !== PHP_SESSION_ACTIVE) {
 
@@ -74,13 +71,18 @@ class Session {
             return false;
         }
 
-        // Insert the session data we have into the DB
-        return $this->database->insert(
-            $this->table,
-            array('session_id' => $this->id,
-                'user_id' => $this->user->id,
-                'created_at' => date("Y-m-d H:i:s"))
-        );
+        // See if we have a sesison that we can just renew before we start a new one
+        if (!$this->renew()) {
+
+            // Insert the session data we have into the DB
+            return $this->database->insert(
+                $this->table,
+                array('session_id' => $this->id,
+                    'user_id' => $this->user->id,
+                    'created_at' => date("Y-m-d H:i:s"))
+            );
+
+        }
 
     }
 
@@ -116,7 +118,7 @@ class Session {
             $this->id = session_id();
 
             // Now we can use the updated ID to do a DB lookup
-            if (!$result = $this->database->select($this->table, array('user_id', 'session_id'), array('session_id' => $this->id)) ) {
+            if (!$result = $this->database->select($this->table, array('user_id', 'session_id', 'created_at'), array('session_id' => $this->id)) ) {
                 return false;
             }
 
@@ -126,8 +128,8 @@ class Session {
             }
 
             // Calculate timeout time
-            $time = new DateTime($result['created_at']);
-            $time->add(new DateInterval('PT' . TIMEOUT_TIME . 'M'));
+            $time = new \DateTime($result['created_at']);
+            $time->add(new \DateInterval('PT' . TIMEOUT_TIME . 'M'));
             $timeoutTime = $time->format('Y-m-d H:i:s');
 
             // Check to see if the session needs to expire
@@ -142,7 +144,14 @@ class Session {
 
                 // TODO: check if this fails
                 // Update the session expiry and return true
-                $this->database->update($this->table, array('created_at' => date('Y-m-d H:i:s')), array('session_id' => $this->id, 'user_id' => $this->user));
+                $this->database->update($this->table, array('created_at' => date('Y-m-d H:i:s')), array('session_id' => $this->id, 'user_id' => $result['user_id']));
+
+                // Update the this class
+                if (!$this->user) {
+                    $this->user = new Models\User();
+                    $this->user->id = $result['user_id'];
+                }
+
                 return true;
 
             }

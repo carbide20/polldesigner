@@ -134,14 +134,15 @@ class Database {
 
         }
 
+        // Merge all the bindings
+        $bind = array_merge($setBind, $whereBind);
+
         // Form the query.
-        $sql = "UPDATE " . $table . "SET " . implode(", ", $set) . " WHERE " . implode(" " . $operator . " ", $where);
+        $sql = "UPDATE " . $table . " SET " . implode(", ", $set) . " WHERE " . implode(" " . $operator . " ", $where);
 
         // Prep, Execute, and return
         $stmt = $this->dbh->prepare($sql);
         return $stmt->execute($bind);
-
-
 
     }
 
