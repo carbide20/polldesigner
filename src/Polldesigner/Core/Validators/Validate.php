@@ -14,7 +14,10 @@
 namespace Polldesigner\Core\Validators;
 
 
-// Use the validate object to run validation rules on formdata, and return errors
+/**
+ * Class Validate - Use the validate object to run validation rules on formdata, and return errors
+ * @package Polldesigner\Core\Validators
+ */
 class Validate {
 
 
@@ -30,6 +33,7 @@ class Validate {
     public function __construct($formdata) {
         $this->formdata = $formdata;
     }
+
 
     /**
      * Lets validation rules be added for processing form data
@@ -122,6 +126,18 @@ class Validate {
      */
     private function min($input, $minLength) {
         return (strlen($input) >= $minLength);
+    }
+
+
+    /**
+     * Makes sure an input is at most a maximum length
+     *
+     * @param $input - Form input to check
+     * @param $maxLength - Maximum length that we'll allow
+     * @return bool - true when the input is at most maxLength, else false
+     */
+    private function max($input, $maxLength) {
+        return (strlen($input) <= $maxLength);
     }
 
 

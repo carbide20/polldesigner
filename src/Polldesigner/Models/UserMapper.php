@@ -28,7 +28,11 @@ class UserMapper {
     private $database, $session, $user;
 
 
-
+    /**
+     * Requires the database and the session, and then creates a new shell user to populate with data
+     * @param Core\Database $database
+     * @param Core\Session $session
+     */
     public function __construct(Core\Database $database, Core\Session $session) {
 
         // Save the database instance
@@ -129,12 +133,18 @@ class UserMapper {
 
     }
 
+
+    /**
+     * Takes login formdata, and then tries to log the user in
+     * @param $formdata
+     * @return bool
+     */
     public function login($formdata) {
 
         // TODO: Add some rate-limiting here for brute forcing
 
+        // Do the database lookup to see
         $results = $this->database->select($this->user->table, array('id', 'username', 'password'), array('username' => $formdata['username']) );
-
 
         // Check the password against the encrypted one in the DB
         if ($this->verify($formdata['password'], $results['password'])) {
@@ -167,10 +177,6 @@ class UserMapper {
     }
 
 
-
-
-
-
     /**
      * Takes the attempted password, and compares it with the hashed
      * password we keep in our DB. It uses bcrypt's comparison functionality.
@@ -201,5 +207,6 @@ class UserMapper {
             return crypt($password, $salt);
         }
     }
+
 
 }

@@ -17,12 +17,19 @@ use Polldesigner\Core as Core;
 use Polldesigner\Models as Models;
 
 
+/**
+ * Class Account - Handles account-related actions
+ * @package Polldesigner\Controllers
+ */
 class Account extends Core\Controller {
 
 
     /**
-     * Empty constructor to overwrite the needed arguments of the parent
-     * TODO: add args to dockblock
+     * Constructor passes needed info up to the parent controller
+     *
+     * @param Core\Database $database - Give us access to the database object & handler
+     * @param Core\Session $session - The session object
+     * @param $request - array of page request data
      */
     public function __construct(Core\Database $database, Core\Session $session, $request) {
         parent::__construct($database, $session, $request);
@@ -46,17 +53,22 @@ class Account extends Core\Controller {
         $view->render('account');
         $view->render('footer');
         exit;
+
     }
 
 
+    /**
+     * Handles user logout. Expires the session, and then redirects
+     * them to the home page
+     */
     public function logoutAction() {
 
         // Kill their current session
         $this->session->expireSession();
 
-        // Redirect back to login
+        // Redirect back to homepage
         header("HTTP/1.1 303 See Other");
-        header("Location: " . SITE_ROOT . "login");
+        header("Location: " . SITE_ROOT);
         exit;
 
     }

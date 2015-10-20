@@ -6,6 +6,10 @@ namespace Polldesigner\Core\Validators;
 class RegisterValidate extends Validate {
 
 
+    /**
+     * Takes an array of form data to run validation against
+     * @param $formdata
+     */
     public function __construct($formdata) {
 
         // Make sure passwords match

@@ -17,12 +17,19 @@ use Polldesigner\Core as Core;
 use Polldesigner\Models as Models;
 
 
+/**
+ * Class Login - Handles user login-related actions
+ * @package Polldesigner\Controllers
+ */
 class Login extends Core\Controller {
 
 
     /**
-     * Empty constructor to overwrite the needed arguments of the parent
-     * TODO: add args to dockblock
+     * Constructor passes needed info up to the parent controller
+     *
+     * @param Core\Database $database
+     * @param Core\Session $session
+     * @param $request
      */
     public function __construct(Core\Database $database, Core\Session $session, $request) {
         parent::__construct($database, $session, $request);

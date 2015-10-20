@@ -17,8 +17,7 @@ use \Polldesigner\Core as Core;
 
 
 /**
- * responsible for knowing of, setting, and getting its own properties
- * Class UserModel
+ * Class UserModel - responsible for knowing of, setting, and getting its own properties
  * @package Model
  */
 class User {

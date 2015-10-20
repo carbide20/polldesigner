@@ -14,17 +14,28 @@ namespace Polldesigner\Controllers;
 
 use Polldesigner\Core as Core;
 
+/**
+ * Class Index - Handles homepage actions
+ * @package Polldesigner\Controllers
+ */
 class Index extends Core\Controller {
 
 
     /**
-     * Empty constructor to overwrite the needed arguments of the parent
+     * Constructor passes needed info up to the parent controller
+     *
+     * @param Core\Database $database
+     * @param Core\Session $session
+     * @param $request
      */
     public function __construct(Core\Database $database, Core\Session $session, $request) {
         parent::__construct($database, $session, $request);
     }
 
 
+    /**
+     * Renders the homepage
+     */
     public function indexAction() {
 
         // Get a Views object

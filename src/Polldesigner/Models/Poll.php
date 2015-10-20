@@ -13,7 +13,7 @@
 
 namespace Polldesigner\Models;
 
-
+// TODO: write this class
 class Poll {
 
 }

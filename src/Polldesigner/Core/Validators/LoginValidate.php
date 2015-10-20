@@ -3,9 +3,17 @@
 namespace Polldesigner\Core\Validators;
 
 
+/**
+ * Class LoginValidate - Handles validation specifically for the login form
+ * @package Polldesigner\Core\Validators
+ */
 class LoginValidate extends Validate {
 
 
+    /**
+     * Takes an array of form data to run validation against
+     * @param $formdata
+     */
     public function __construct($formdata) {
 
         // Make sure they entered something
