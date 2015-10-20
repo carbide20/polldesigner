@@ -71,7 +71,7 @@ class Session {
             return false;
         }
 
-        // See if we have a sesison that we can just renew before we start a new one
+        // See if we have a session that we can just renew before we start a new one
         if (!$this->renew()) {
 
             // Insert the session data we have into the DB
@@ -118,9 +118,8 @@ class Session {
             $this->id = session_id();
 
             // Now we can use the updated ID to do a DB lookup
-            if (!$result = $this->database->select($this->table, array('user_id', 'session_id', 'created_at'), array('session_id' => $this->id)) ) {
-                return false;
-            }
+            $result = $this->database->select($this->table, array('user_id', 'session_id', 'created_at'), array('session_id' => $this->id));
+            if (!$result) { return false; }
 
             // See if the session IDs match
             if (empty($result) || !array_key_exists('session_id', $result) || $result['session_id'] !== $this->id) {

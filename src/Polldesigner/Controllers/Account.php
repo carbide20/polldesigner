@@ -49,4 +49,17 @@ class Account extends Core\Controller {
     }
 
 
+    public function logoutAction() {
+
+        // Kill their current session
+        $this->session->expireSession();
+
+        // Redirect back to login
+        header("HTTP/1.1 303 See Other");
+        header("Location: " . SITE_ROOT . "login");
+        exit;
+
+    }
+
+
 }
