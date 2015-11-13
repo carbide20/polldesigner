@@ -47,14 +47,22 @@ class Account extends Core\Controller {
         // Authenticate the user
         $this->session->auth();
 
+        // Instantiate a new PollMapper so we can work with polls
+        $pollMapper = new Models\PollMapper($this->database, $this->session);
+
+        // Get all the polls associate with this user
+        $polls = $pollMapper->loadAll();
+
         // Render the Views
         $view->render('header');
         $view->render('notifications');
-        $view->render('account');
+        $view->render('account', array('polls' => $polls));
         $view->render('footer');
         exit;
 
     }
+
+
 
 
     /**

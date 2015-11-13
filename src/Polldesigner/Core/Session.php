@@ -9,6 +9,7 @@ class Session {
     private $table = 'sessions';
     private $id;
     private $user;
+    private $database;
 
 
     /**
@@ -27,6 +28,15 @@ class Session {
             throw new Exception('Session save path "'.session_save_path().'" is not writable!');
         }
 
+    }
+
+
+    /**
+     * Getter for the ID property
+     * @return mixed int when there is an ID, otherwise null;
+     */
+    public function getUserId() {
+        return $this->user->id;
     }
 
 
@@ -77,9 +87,11 @@ class Session {
             // Insert the session data we have into the DB
             return $this->database->insert(
                 $this->table,
-                array('session_id' => $this->id,
+                array(
+                    'session_id' => $this->id,
                     'user_id' => $this->user->id,
-                    'created_at' => date("Y-m-d H:i:s"))
+                    'created_at' => date("Y-m-d H:i:s")
+                )
             );
 
         }

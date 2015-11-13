@@ -13,7 +13,11 @@
 
 namespace Polldesigner\Models;
 
-// TODO: write this class
+
 class Poll {
+
+    public $name, $loaded, $id;
+
+
 
 }

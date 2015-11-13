@@ -38,13 +38,18 @@ class View {
      * @param $template - The template name as parsed from a route, excluding directory / extension
      * @return bool - false when template not found
      */
-    public function render($view = null) {
+    public function render($view = null, $vars = array()) {
 
         // Check to make sure the template exists
         if (file_exists('../src/Polldesigner/Views/' . ucfirst($view) . '.php')) {
 
+            ob_start();
+            extract($vars);
+
             // Load up the template
             require_once('../src/Polldesigner/Views/' . ucfirst($view) . '.php');
+            echo ob_get_clean();
+
             return true;
 
         // The requested template file doesn't exist

@@ -75,9 +75,9 @@ class UserMapper {
         $user = new User();
 
         // Set the user's properties
-        $user->id($userdata['id']);
-        $user->username($userdata['username']);
-        $user->loaded(true);
+        $user->id = $userdata['id'];
+        $user->username = $userdata['username'];
+        $user->loaded = true;
 
         // Give them the new user
         return $user;
@@ -151,7 +151,8 @@ class UserMapper {
 
             // Now that we've logged them in, set the important stuff on the user model
             $this->user->username = $results['username'];
-            $this->user->id = $results['id'];
+            $this->user->id = intval($results['id']);
+            $this->user->loaded = true;
 
             // Fire up the session, saving it to our DB as well
             if (!$this->session->start($this->user)) {
